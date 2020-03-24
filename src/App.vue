@@ -7,6 +7,9 @@
 </template>
 
 <style lang="less">
+// 字体图标
+@import url("//at.alicdn.com/t/font_1426139_jm7n2373nlh.css");
+// 全局样式
   *{
     margin: 0;
     padding: 0;
