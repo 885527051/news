@@ -37,10 +37,10 @@
       </div>
     </van-form>
     <router-link to="/register">
-      <van-button round block>
-          注册
-    </van-button>
-    </router-link>
+            <van-button round block class="link-register" >
+                注册
+            </van-button>
+        </router-link>
   </div>
 </template>
 
@@ -63,7 +63,7 @@ export default {
       // 调用axios发起异步请求，类似$.ajax(类似不代表一样)
       this.$axios({
         // 接口地址
-        url:"http://127.0.0.1:3000/login",
+        url:"/login",
         // 声明请求的方法为post请求(一定要注册这个method没有s)
         // 跟vue的methods属性毫无关系
         method:"post",
@@ -80,7 +80,8 @@ export default {
   }
 };
 </script>
-<style lang="less">
+<style lang="less" scoped>
+// scoped属性表示样式只针对当前的组件有效
   .container{
     padding: 20 / 360 * 100vw;
     // background: #f2f2f2;
@@ -120,6 +121,7 @@ export default {
     }
     .link-register{
       margin-top: 20 / 360 * 100vw;
+      border: none;
     }
   }
 </style>
