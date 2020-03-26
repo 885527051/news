@@ -32,10 +32,15 @@
         <!-- 如果这个按钮是在van-form组件内部，
         并且按钮得native-type="submit"，说明点击这个按钮就会触发submit事件 -->
         <van-button round block type="info" native-type="submit">
-          提交
+          登录
         </van-button>
       </div>
     </van-form>
+    <router-link to="/register">
+      <van-button round block>
+          注册
+    </van-button>
+    </router-link>
   </div>
 </template>
 
@@ -112,6 +117,9 @@ export default {
             background-color: #cc3300;
             border: 1px solid #cc3300;
         }
+    }
+    .link-register{
+      margin-top: 20 / 360 * 100vw;
     }
   }
 </style>
