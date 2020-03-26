@@ -11,19 +11,31 @@
     </div>
 
     <!-- 表单 -->
-    <div class="form">
-      <div class="form-item">
-        <input type="text" placeholder="手机号码" v-model="form.username">
+    <!-- van-form是表单得组件，@submit是表单得提交事件 -->
+    <van-form @submit="onSubmit">
+      <!-- van-field是表单的字段 -->
+      <!-- rules是表单字段的规则，required表示这个是输入框是必填 -->
+      <van-field
+        v-model="form.username"
+        name="用户名"
+        placeholder="用户名"
+        :rules="[{ required: true, message: '请填写用户名' }]"
+      />
+      <van-field
+        v-model="form.password"
+        type="password"
+        name="密码"
+        placeholder="密码"
+        :rules="[{ required: true, message: '请填写密码' }]"
+      />
+      <div style="margin: 16px;">
+        <!-- 如果这个按钮是在van-form组件内部，
+        并且按钮得native-type="submit"，说明点击这个按钮就会触发submit事件 -->
+        <van-button round block type="info" native-type="submit">
+          提交
+        </van-button>
       </div>
-      <div class="form-item">
-        <input type="password" placeholder="请输入密码" v-model="form.password">
-      </div>
-      <div class="form-item">
-        <button @click="handleClick">登录</button>
-      </div>
-
-    </div>
-
+    </van-form>
   </div>
 </template>
 
@@ -39,19 +51,9 @@ export default {
     }
   },
   methods:{
-    handleClick(){
-      // 调用axios 发起请求
-      this.$axios({
-        // 接口地址
-        url:"http://127.0.0.1:3000/login",
-        // post 请求
-        method:"POST",
-        // 参数
-        data:this.form
-      }).then(res => {
-        console.log(res)
-      })
-    }
+    onSubmit(values) {
+      console.log('submit', this.form);
+    },
   }
 };
 </script>
@@ -59,6 +61,7 @@ export default {
   .container{
     padding: 20 / 360 * 100vw;
     // background: #f2f2f2;
+    // 返回按钮
     .back-btn{
       margin-top: 13 / 360 *100vw;
       line-height: 1;
@@ -66,6 +69,7 @@ export default {
         font-size: 27 / 360 *100vw;
       }
     }
+    // logo
     .logo{
       text-align: center;
       margin-top: 20 / 360 * 100vw;
@@ -74,6 +78,7 @@ export default {
         color: #cc3300;
       }
     }
+    // 表单
     .form-item{
       margin-top: 20 / 360 * 100vw;
       input{
