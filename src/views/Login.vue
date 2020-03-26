@@ -1,87 +1,104 @@
 <template>
-  <div class="w">
-    <div class="head"></div>
-    <div class="subject">
-      <!-- 要显示阿里图标库的图标，必须要加上iconfont这个类名，第二类名就是你想要显示的那个图标 -->
-    <div class="close iconfont iconicon-test"></div>
-    <h1 class="iconfont iconnew login"></h1>
-    <form class="form">
-      <input type="text" placeholder="用户名/手机号码" class="txt"/>
-      <!-- <br> -->
-      <input type="password" placeholder="密码" class="password"/>
-      <!-- <br> -->
-      <button class="confirm">登录</button>
-    </form>
+  <div class="container">
+    <!-- 返回上一页按钮 -->
+    <div class="back-btn">
+      <span class="iconfont iconicon-test"></span>
     </div>
-    <div class="footer"></div>
+
+    <!-- logo -->
+    <div class="logo">
+      <span class="iconfont iconnew"></span>
+    </div>
+
+    <!-- 表单 -->
+    <div class="form">
+      <div class="form-item">
+        <input type="text" placeholder="手机号码" v-model="form.username">
+      </div>
+      <div class="form-item">
+        <input type="password" placeholder="请输入密码" v-model="form.password">
+      </div>
+      <div class="form-item">
+        <button @click="handleClick">登录</button>
+      </div>
+
+    </div>
+
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  data(){
+    return {
+      // 保存表单数据
+      form:{
+        username:"",
+        password:""
+      }
+    }
+  },
+  methods:{
+    handleClick(){
+      // 调用axios 发起请求
+      this.$axios({
+        // 接口地址
+        url:"http://127.0.0.1:3000/login",
+        // post 请求
+        method:"POST",
+        // 参数
+        data:this.form
+      }).then(res => {
+        console.log(res)
+      })
+    }
+  }
+};
 </script>
 <style lang="less">
-  .w{
-    margin: 0 auto;
-    width: 360px;
-    height: 635px;
-    background: #f2f2f2;
-    .head{
-      height: 24px;
-      background: #757575;
-    }
-    .subject{
-      // 相对定位
-      position: relative;
-      .close{
-        font-size: 27px;
-        // 绝对定位
-        position: absolute;
-        left: 20px;
-        top: 20px;
-      }
-      .login{
-        // 默认值。定义标准的字符。
-        font-weight: normal;
-        position: absolute;
-        left: 120px;
-        top: 80px;
-        font-size: 120px;
-        color: red;
-      }
-      .form{
-        position: absolute;
-        left: 30px;
-        top: 220px;
-        input{
-          width: 280px;
-          display: block;
-          padding: 10px;
-          font-size: 18px;
-          border: none;
-          outline: none;
-          border-bottom: 1px #101010 solid;
-          background: #f2f2f2;
-          text-align: left;
-        }
-        button{
-          margin-top: 50px;
-          width: 300px;
-          height: 48px;
-          background: #cc3300;
-          border: none;
-          border-radius: 24px;
-          color: #fff;
-          font-size: 20px;
-        }
+  .container{
+    padding: 20 / 360 * 100vw;
+    // background: #f2f2f2;
+    .back-btn{
+      margin-top: 13 / 360 *100vw;
+      line-height: 1;
+      span{
+        font-size: 27 / 360 *100vw;
       }
     }
-    .footer{
-      position: relative;
-      left: 0px;
-      top: 518px;
-      height: 48px;
-      background: #000;
+    .logo{
+      text-align: center;
+      margin-top: 20 / 360 * 100vw;
+      span{
+        font-size: 126 / 360 * 100vw;
+        color: #cc3300;
+      }
+    }
+    .form-item{
+      margin-top: 20 / 360 * 100vw;
+      input{
+        width: 100%;
+        height: 44 / 360 * 100vw;
+        // C3盒子模型
+        box-sizing: border-box;
+        line-height: 44 / 360 * 100vw;
+        background: none;
+        border: none;
+        border-bottom: 1px #999 solid;
+        outline: none; // 点击没有高亮
+        font-size: 16px;
+      }
+      button{
+        margin-top: 50 / 360 * 100vw;
+        width: 100%;
+        height: 48 / 360 * 100vw;
+        background: #cc3300;
+        color: #fff;
+        border-radius: 50px;
+        border: none;
+        outline: none;
+        font-size: 16px;
+      }
     }
   }
 </style>
