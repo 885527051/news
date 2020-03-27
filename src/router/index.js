@@ -21,6 +21,11 @@ const routes = [
   path: "/register",
   component: () => import("@/views/Register")
  },
+ {
+  //  个人信息页
+  path: "/personal",
+  component: () => import("@/views/Personal")
+ },
 ]
 
 const router = new VueRouter({
