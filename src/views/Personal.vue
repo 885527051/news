@@ -33,6 +33,11 @@
     <!-- 组件的调用，单双标签都可以 -->
     <!-- 声明组件可以接收的属性, label表示左边的文字, tips是右边的文字 -->
     <Listbar v-for="(item, index) in rows" :key="index" :label="item.label" :tips="item.tips"/>
+
+    <!-- handleClick点击退出按钮时候触发 -->
+		<!-- click.native这个事件类型，会给Listbar这个组件最外部的div强制绑定点击事件
+			不要去跟事件传递作比较 -->
+      <Listbar @click.native="handleClick" label="退出" />
   </div>
 </template>
 
@@ -50,7 +55,6 @@ export default {
         {label:"我的关注",tips:"关注的用户"},
         { label: "我的跟帖", tips: "跟帖回复" },
 				{ label: "我的收藏", tips: "文章视频" },
-				{ label: "设置", tips: "" },
       ],
       // 个人的详细信息,初始值给一个对象
       userInfo:{},
@@ -83,6 +87,26 @@ export default {
       // 赋值给data的userInfo
       this.userInfo = data;
     })
+  },
+  methods:{
+    // 退出的事件
+    handleClick(){
+      // 询问用户是否确定退出
+      this.$dialog.confirm({
+        title:"提示",
+        message:"确定退出吗？"
+      }).then(() => {
+        // 点击确定时候触发的函数
+				
+        // 清除本地的存储的用户数据
+        localStorage.removeItem("userInfo");
+        // 跳转到登录页,必须要使用replace。因为退出不可能再返回个人中心
+        this.$router.replace("/login");
+      }).catch(() => {
+        // 点击取消按钮触发的函数
+        // on cancel
+      });
+    }
   }
 }
 </script>
