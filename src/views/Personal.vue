@@ -19,10 +19,8 @@
     </div>
     <!-- 列表按钮栏 -->
     <!-- 组件的调用，单双标签都可以 -->
-    <Listbar/>
-    <Listbar/>
-    <Listbar/>
-    <Listbar/>
+    <!-- 声明组件可以接收的属性, label表示左边的文字, tips是右边的文字 -->
+    <Listbar v-for="(item, index) in rows" :key="index" :label="item.label" :tips="item.tips"/>
   </div>
 </template>
 
@@ -31,6 +29,18 @@
 // @代表src目录
 import Listbar from "@/components/Listbar"
 export default {
+  data(){
+    return {
+      // 组织一个列表按钮栏的数据
+      rows:[
+        {label:"我的关注",tips:"关注的用户"},
+        { label: "我的跟帖", tips: "跟帖回复" },
+				{ label: "我的收藏", tips: "文章视频" },
+				{ label: "设置", tips: "" },
+      ]
+    }
+  },
+  // 注册组件,导入的子组件都必须注册才可以再模板渲染
   components:{
     Listbar
   }
