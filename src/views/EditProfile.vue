@@ -22,7 +22,13 @@
      <van-dialog v-model="showPassword" title="修改密码" show-cancel-button @confirm="handleChangePassword">
       <van-field v-model="password" type="password" placeholder="请输入密码" />
     </van-dialog>
-    <Listbar label="性别" :tips="['女','男'][userInfor.gender]"/>
+
+    <Listbar @click.native="showGender = true" label="性别" :tips="['女','男'][userInfor.gender]"/>
+    <!-- 编辑性别的弹窗 -->
+        <!-- close-on-click-action 自动关闭弹窗
+        actions 弹窗菜单的选项
+        select 选中某一项时候的事件 -->
+    <van-action-sheet v-model="showGender" :actions="actions" @select="onSelect" />
   </div>
 </template>
 
@@ -47,6 +53,13 @@ export default {
       show: false,
       // 是否显示编辑密码的弹窗
       showPassword: false,
+      // 是否显示编辑性别的弹窗
+      showGender: false,
+      actions: [
+        { name: '男' ,gender:1},
+        { name: '女' ,gender:0},
+      ],
+
       // 单独记录弹窗输入框昵称
       nickname:"",
       // 单独记录弹窗输入框密码
@@ -135,6 +148,15 @@ export default {
     handleChangePassword(){
       // 调用编辑用户信息的函数
       this.handleEdit({password:this.password})
+    },
+    onSelect(item) {
+      // 默认情况下点击选项时不会自动收起
+      // 可以通过 close-on-click-action 属性开启自动收起
+      this.showGender = false;
+      // Toast(item.name);
+      console.log(item);
+      this.handleEdit({gender: item.gender})
+      this.userInfor.gender = item.gender
     }
   }
 }
