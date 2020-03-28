@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 导航页 -->
-    <NavigateBar/>
+    <NavigateBar title="编辑资料"/>
   </div>
 </template>
 

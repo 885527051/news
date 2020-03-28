@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <NavigateBar/>
+    <NavigateBar title="个人中心" :showHome="true"/>
     
     <router-link to="/edit-profile">
       <!-- 头部 -->
