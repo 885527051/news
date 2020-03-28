@@ -85,6 +85,8 @@ export default {
   }
 };
 </script>
+
+
 <style lang="less" scoped>
 // scoped属性表示样式只针对当前的组件有效
   .container{

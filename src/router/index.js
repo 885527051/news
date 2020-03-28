@@ -26,6 +26,11 @@ const routes = [
   path: "/personal",
   component: () => import("@/views/Personal")
  },
+ {
+  //  编辑页
+  path: "/edit-profile",
+  component: () => import("@/views/EditProfile")
+ },
 ]
 
 const router = new VueRouter({
