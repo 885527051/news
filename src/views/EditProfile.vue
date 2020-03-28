@@ -18,7 +18,10 @@
       <van-field v-model="nickname" placeholder="请输入用户名" />
     </van-dialog>
 
-    <Listbar label="密码" tips="******"/>
+    <Listbar label="密码" tips="******" @click.native="showPassword = true"/>
+     <van-dialog v-model="showPassword" title="修改密码" show-cancel-button @confirm="handleChangePassword">
+      <van-field v-model="password" type="password" placeholder="请输入密码" />
+    </van-dialog>
     <Listbar label="性别" :tips="['女','男'][userInfor.gender]"/>
   </div>
 </template>
@@ -42,8 +45,12 @@ export default {
       // 本地的用户数据
       userJson: {},
       show: false,
-      // 单独记录昵称
-      nickname:""
+      // 是否显示编辑密码的弹窗
+      showPassword: false,
+      // 单独记录弹窗输入框昵称
+      nickname:"",
+      // 单独记录弹窗输入框密码
+      password:""
     }
   },
   mounted(){
@@ -123,6 +130,11 @@ export default {
       this.handleEdit({nickname:this.nickname})
       // 同步的修改当前显示的数据
       this.userInfor.nickname = this.nickname
+    },
+    // 修改密码的事件
+    handleChangePassword(){
+      // 调用编辑用户信息的函数
+      this.handleEdit({password:this.password})
     }
   }
 }
