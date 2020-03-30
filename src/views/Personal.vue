@@ -28,7 +28,7 @@
     <!-- 列表按钮栏 -->
     <!-- 组件的调用，单双标签都可以 -->
     <!-- 声明组件可以接收的属性, label表示左边的文字, tips是右边的文字 -->
-    <Listbar v-for="(item, index) in rows" :key="index" :label="item.label" :tips="item.tips"/>
+    <Listbar v-for="(item, index) in rows" :key="index" :label="item.label" :tips="item.tips" :path="item.path"/>
 
     <!-- handleClick点击退出按钮时候触发 -->
 		<!-- click.native这个事件类型，会给Listbar这个组件最外部的div强制绑定点击事件
@@ -50,9 +50,9 @@ export default {
     return {
       // 组织一个列表按钮栏的数据
       rows:[
-        {label:"我的关注",tips:"关注的用户"},
-        { label: "我的跟帖", tips: "跟帖回复" },
-				{ label: "我的收藏", tips: "文章视频" },
+        {label:"我的关注",tips:"关注的用户",path:"/follow"},
+        { label: "我的跟帖", tips: "跟帖回复",path:"/comments" },
+				{ label: "我的收藏", tips: "文章视频",path:"/star" },
       ],
       // 个人的详细信息,初始值给一个对象
       userInfo:{},

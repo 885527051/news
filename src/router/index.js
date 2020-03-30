@@ -31,6 +31,11 @@ const routes = [
   path: "/edit-profile",
   component: () => import("@/views/EditProfile")
  },
+ {
+  //  我的关注页
+  path: "/follow",
+  component: () => import("@/views/Follow")
+ },
 ]
 
 const router = new VueRouter({
