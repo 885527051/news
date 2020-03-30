@@ -41,6 +41,11 @@ const routes = [
   path: "/comment",
   component: () => import("@/views/Comment")
  },
+ {
+  //  我的收藏页
+  path: "/star",
+  component: () => import("@/views/Star")
+ },
 ]
 
 const router = new VueRouter({
