@@ -7,7 +7,8 @@ Vue.use(VueRouter)
 const routes = [
   {
     path:"/",
-    redirect:"/login"
+    // redirect:"/index",
+    component:()=>import("@/views/Index")
   },
  {
   //  登录页
