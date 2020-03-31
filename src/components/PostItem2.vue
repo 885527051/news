@@ -1,5 +1,4 @@
 <template>
-  <div>
     <div class="imgList">
       <h4>林志玲穿透视黑纱裙米兰看秀腹部微隆显孕味</h4>
       <div class="images">
@@ -7,8 +6,8 @@
         <img src="https://www.baidu.com/img/bd_logo1.png" />
         <img src="https://www.baidu.com/img/bd_logo1.png" />
       </div>
+      <p>火星时报 52跟帖</p>
     </div>
-  </div>
 </template>
 
 <script>
