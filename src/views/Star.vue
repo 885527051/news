@@ -10,7 +10,7 @@
           <h4>{{item.title}}</h4>
           <p>{{item.user.nickname}} {{item.comments.length}}跟帖</p>
         </div>
-        <img :src="$axios.defaults.baseURL + item.user.head_img" alt />
+        <img :src="$axios.defaults.baseURL + item.user.head_img"/>
       </div>
     </div>
 
