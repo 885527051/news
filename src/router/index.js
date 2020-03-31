@@ -19,32 +19,68 @@ const routes = [
  {
   //  注册页
   path: "/register",
-  component: () => import("@/views/Register")
+  component: () => import("@/views/Register"),
+  // 路由可以通过meta自定义数据，可以选择在路由随意加上自己的数据，
+  // 它的值可以是任意的类型,
+  meta: {
+    // 代表这个页面需要授权
+    authorization: true
+  }
  },
  {
   //  个人信息页
   path: "/personal",
-  component: () => import("@/views/Personal")
+  component: () => import("@/views/Personal"),
+  // 路由可以通过meta自定义数据，可以选择在路由随意加上自己的数据，
+  // 它的值可以是任意的类型,
+  meta: {
+    // 代表这个页面需要授权
+    authorization: true
+  }
  },
  {
   //  编辑页
   path: "/edit-profile",
-  component: () => import("@/views/EditProfile")
+  component: () => import("@/views/EditProfile"),
+  // 路由可以通过meta自定义数据，可以选择在路由随意加上自己的数据，
+  // 它的值可以是任意的类型,
+  meta: {
+    // 代表这个页面需要授权
+    authorization: true
+  }
  },
  {
   //  我的关注页
   path: "/follow",
-  component: () => import("@/views/Follow")
+  component: () => import("@/views/Follow"),
+  // 路由可以通过meta自定义数据，可以选择在路由随意加上自己的数据，
+  // 它的值可以是任意的类型,
+  meta: {
+    // 代表这个页面需要授权
+    authorization: true
+  }
  },
  {
   //  我的跟贴页
   path: "/comment",
-  component: () => import("@/views/Comment")
+  component: () => import("@/views/Comment"),
+  // 路由可以通过meta自定义数据，可以选择在路由随意加上自己的数据，
+  // 它的值可以是任意的类型,
+  meta: {
+    // 代表这个页面需要授权
+    authorization: true
+  }
  },
  {
   //  我的收藏页
   path: "/star",
-  component: () => import("@/views/Star")
+  component: () => import("@/views/Star"),
+  // 路由可以通过meta自定义数据，可以选择在路由随意加上自己的数据，
+  // 它的值可以是任意的类型,
+  meta: {
+    // 代表这个页面需要授权
+    authorization: true
+  }
  },
 ]
 

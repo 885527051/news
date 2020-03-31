@@ -26,7 +26,7 @@ Vue.config.productionTip = false
 // next：必须要调用，next就类似于你nodejs的中间件，调用才会加载后面的内容
 router.beforeEach((to, from, next) => {
   // 判断是否去的个人中心页
-  if(to.path === "/personal"){
+  if(to.meta.authorization){
     // 判断是否是登录状态，时候有token
     // 如果本地的数据是空会返回null，null是没有token属性，会导致js报错，
     // 所以可以加个判断，如果本地的数据空的，等于空的对象
