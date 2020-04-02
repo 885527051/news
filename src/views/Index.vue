@@ -17,13 +17,22 @@
     <!-- sticky：是否使用粘性定位布局 -->
     <!-- swipeable: 是否开启手势滑动切换 -->
     <van-tabs v-model="active" sticky swipeable>
-      <van-tab v-for="(item, index) in categories" :key="index" :title="item">
-        <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-          <van-cell v-for="item in list" :key="item">
-            <!-- 只有单张图片的 -->
-            <PostItem1 />
+      <van-tab v-for="(item, index) in categories" :key="index" :title="item.name">
+        <!-- <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+        <van-cell v-for="item in list" :key="item">-->
+        <!-- 只有单张图片的 -->
+        <!-- <PostItem1 />
           </van-cell>
-        </van-list>
+        </van-list>-->
+
+        <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
+          <!-- 假设list是后台返回的数组，里有10个元素 -->
+          <!-- <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad"> -->
+            <van-cell v-for="(item, index) in list" :key="index">
+              <PostItem1 />
+            </van-cell>
+          <!-- </van-list> -->
+        </van-pull-refresh>
       </van-tab>
     </van-tabs>
   </div>
@@ -41,27 +50,29 @@ export default {
   },
   data() {
     return {
-      categories: [
-        "关注",
-        "娱乐",
-        "体育",
-        "汽车",
-        "房产",
-        "关注",
-        "关注",
-        "娱乐",
-        "体育",
-        "汽车",
-        "房产",
-        "关注",
-        "∨"
-      ],
+      // categories: [
+      //   "关注",
+      //   "娱乐",
+      //   "体育",
+      //   "汽车",
+      //   "房产",
+      //   "关注",
+      //   "关注",
+      //   "娱乐",
+      //   "体育",
+      //   "汽车",
+      //   "房产",
+      //   "关注",
+      //   "∨"
+      // ],
+      categories:[],
       // 记录当前tab的切换的索引
       active: 0,
       // 假设这个数组是后台返回的数据
       list: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1], // 10个1
       loading: false, // 是否正在加载中
       finished: false, // 是否已经加载完毕
+      refreshing: false,
       // 监听属性
       watch: {
         // 监听tab栏的切换
@@ -74,22 +85,46 @@ export default {
       }
     };
   },
+  mounted(){
+    // 在请求之前，应该先判断本地有没栏目数据
+    const categories = JSON.parse(localStorage.getItem("categories"));
+
+    // 如果本地有数据，获取本地的数据来渲染
+    if(categories){
+      this.categories = categories
+    }else{
+      // 没有本地的数据才去请求栏目接口
+      this.$axios({
+        url:"/category"
+      }).then(res => {
+        // 菜单的数据
+        const {data} = res.data;
+        // 给data添加一个点击跳转到栏目管理的图标
+        data.push({
+          name:"V"
+        })
+        this.categories = data;
+        // 把菜单的数据保存到本地
+        localStorage.setItem("categories",JSON.stringify(data))
+      })
+    }
+  },
   methods: {
     onLoad() {
       // 异步更新数据
-      // setTimeout 仅做示例，真实场景中一般为 ajax 请求
-      setTimeout(() => {
-        for (let i = 0; i < 10; i++) {
-          this.list.push(this.list.length + 1);
-        }
+      console.log("已经到底了");
+      
+    },
+     onRefresh() {
+       setTimeout(() => {
+      // 清空列表数据
+      this.finished = false;
 
-        // 加载状态结束
-        this.loading = false;
-
-        // 数据全部加载完成
-        if (this.list.length >= 40) {
-          this.finished = true;
-        }
+      // 重新加载数据
+      // 将 loading 设置为 true，表示处于加载状态
+      this.loading = false;
+      this.refreshing = false
+      this.onLoad();
       }, 5000);
     }
   }
