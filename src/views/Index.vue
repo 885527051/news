@@ -67,6 +67,8 @@ export default {
       categories:[],
       // 记录当前tab的切换的索引
       active: 0,
+      // 记录当前的栏目的id
+      categoryId:999,
       // 假设这个文章数组是后台返回的数据
       list: [], // 10个1
       loading: false, // 是否正在加载中
@@ -105,6 +107,8 @@ export default {
         return;
       }
       this.categories = categories;
+      // 给每个栏目都加上pageIndex = 1
+      this.handleCategories()
     }else{
       // 获取栏目数据
       this.getcategories(token)
@@ -114,7 +118,7 @@ export default {
       url:"/post",
       // params就是url问号后面的参数
       params:{
-        category:999
+        category:this.categoryId
       }
     }).then(res => {
       // 文章的数据
@@ -124,6 +128,13 @@ export default {
     })
   },
   methods: {
+    // 循环给栏目加上pageIndex，每个栏目都是自己的pageIndex
+    handleCategories(){
+      this.categories = this.categories.map(v => {
+        v.pageIndex = 1;
+        return v;
+      })
+    },
     // 获取栏目数据, 如果有token加上到头信息。没有就不加
     getcategories(token){
       // 请求的配置
@@ -142,8 +153,11 @@ export default {
         // 菜单的数据
         const {data} = res.data;
         // 给data添加一个点击跳转到栏目管理的图标
+        this.categories = data;
         // 把菜单的数据保存到本地
         localStorage.setItem("categories",JSON.stringify(data))
+        // 给每个栏目都加上pageIndex = 1
+        this.handleCategories();
       })
     },
     onLoad() {
