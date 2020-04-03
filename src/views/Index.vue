@@ -30,7 +30,7 @@
             @load="onLoad"
           >
             <!-- 假设list是后台返回的数组，里有10个元素 -->
-            <van-cell v-for="(item, index) in list" :key="index">
+            <van-cell v-for="(item, index) in categories[active].posts" :key="index">
               <!-- 只有单张图片 -->
               <PostItem1
                 v-if="item.type === 1 && item.cover.length > 0 && item.cover.length < 3"
@@ -85,7 +85,7 @@ export default {
       // 记录当前的栏目的id
       categoryId: 999,
       // 假设这个文章数组是后台返回的数据
-      list: [], // 10个1
+      // list: [],
       loading: false, // 是否正在加载中
       finished: false, // 是否已经加载完毕
       refreshing: false,
@@ -96,9 +96,12 @@ export default {
           // 判断如果点击的是最后一个图标，跳转到栏目管理页
           if (this.active === this.categories.length - 1) {
             this.$router.push("/栏目管理");
+            return
           }
+          // 请求不同的栏目的数据
+          this.getList();
         }
-      }
+      },
     };
   },
   mounted() {
@@ -140,15 +143,19 @@ export default {
     }).then(res => {
       // 文章的数据
       const { data } = res.data;
-      // 保存到data的list中
-      this.list = data;
+      // 如果是修改数组中某一项的属性，不会驱动视图的更新的
+      this.categories[this.active].posts = data;
+      // 赋值的方式可以引起模板的刷新
+      this.categories = [...this.categories]
     });
   },
   methods: {
+    // 当栏目数据加载完成后
     // 循环给栏目加上pageIndex，每个栏目都是自己的pageIndex
     handleCategories() {
       this.categories = this.categories.map(v => {
         v.pageIndex = 1;
+        v.posts = []
         return v;
       });
     },
@@ -177,30 +184,41 @@ export default {
         this.handleCategories();
       });
     },
+    // 加载下一页的数据
     onLoad() {
       setTimeout(() => {
         // 当前栏目下pageIndex加1
         this.categories[this.active].pageIndex += 1;
-        // 加载下一页的数据
+        // 请求文章列表
+        this.getList()
+      }, 1000);
+    },
+    // 封装一个请求文章列表的方法
+    getList(){
+      const {pageIndex, id, posts} = this.categories[this.active]
+      // console.log(this.categories[this.active]);
+      
+      // 加载下一页的数据
         this.$axios({
           url: "/post",
           params: {
-            pageIndex: this.categories[this.active].pageIndex,
+            pageIndex: pageIndex,
             pageSize: 5,
-            category: this.categoryId
+            category: id
           }
         }).then(res => {
           const { data, total } = res.data;
           // 把新的文章数据合并到原来的文章列表中
-          this.list = [...this.list, ...data];
+          // 这里因为active也会导致页面更新
+          this.categories[this.active].posts = [...posts, ...data];
           // 加载状态结束
           this.loading = false;
           // 是否是最后一页
-          if (this.list.length === total) {
+          if (this.categories[this.active].posts.length === total) {
             this.finished = true;
           }
+          console.log(this.categories)
         });
-      }, 3000);
     },
     onRefresh() {
       this.refreshing = false;
