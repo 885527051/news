@@ -20,7 +20,7 @@ export default {
 
 <style scoped lang="less">
 .imgText {
-  padding: 20/360 * 100vw;
+  padding: 10/360 * 100vw 20/360 * 100vw;
   display: flex;
   justify-content: space-between;
   align-items: center;

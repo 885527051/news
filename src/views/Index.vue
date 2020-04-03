@@ -18,19 +18,32 @@
     <!-- swipeable: 是否开启手势滑动切换 -->
     <van-tabs v-model="active" sticky swipeable>
       <van-tab v-for="(item, index) in categories" :key="index" :title="item.name">
-
         <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
-          <!-- 假设list是后台返回的数组，里有10个元素 -->
-          <van-cell v-for="(item, index) in list" :key="index">
-            <!-- 只有单张图片 -->
-            <PostItem1 v-if="item.type === 1 && item.cover.length > 0 && item.cover.length < 3" :data="item" />
+          <!-- van的列表组件 -->
+          <!-- @load 滚动到底部时候触发的函数 -->
+          <!-- immediate-check 这个属性可以阻止list组件默认就加载一次 -->
+          <van-list
+            :immediate-check="false"
+            v-model="loading"
+            :finished="finished"
+            finished-text="没有更多了"
+            @load="onLoad"
+          >
+            <!-- 假设list是后台返回的数组，里有10个元素 -->
+            <van-cell v-for="(item, index) in list" :key="index">
+              <!-- 只有单张图片 -->
+              <PostItem1
+                v-if="item.type === 1 && item.cover.length > 0 && item.cover.length < 3"
+                :data="item"
+              />
 
-            <!-- 大于等于3张图片 -->
-            <PostItem2 v-if="item.type === 1 && item.cover.length >= 3" :data="item" />
+              <!-- 大于等于3张图片 -->
+              <PostItem2 v-if="item.type === 1 && item.cover.length >= 3" :data="item" />
 
               <!-- 视频 -->
-            <PostItem3 v-if="item.type === 2" :data="item" />
-          </van-cell>
+              <PostItem3 v-if="item.type === 2" :data="item" />
+            </van-cell>
+          </van-list>
         </van-pull-refresh>
       </van-tab>
     </van-tabs>
@@ -42,10 +55,12 @@
 import PostItem1 from "@/components/PostItem1";
 // 大于等于3张图片的组件
 import PostItem2 from "@/components/PostItem2";
+import PostItem3 from "@/components/PostItem3";
 export default {
   components: {
     PostItem1,
-    PostItem2
+    PostItem2,
+    PostItem3
   },
   data() {
     return {
@@ -64,11 +79,11 @@ export default {
       //   "关注",
       //   "∨"
       // ],
-      categories:[],
+      categories: [],
       // 记录当前tab的切换的索引
       active: 0,
       // 记录当前的栏目的id
-      categoryId:999,
+      categoryId: 999,
       // 假设这个文章数组是后台返回的数据
       list: [], // 10个1
       loading: false, // 是否正在加载中
@@ -86,96 +101,109 @@ export default {
       }
     };
   },
-  mounted(){
+  mounted() {
     // 在请求之前，应该先判断本地有没栏目数据
     const categories = JSON.parse(localStorage.getItem("categories"));
     // 本地的token
-    const {token} = JSON.parse(localStorage.getItem("userInfo")) || {};
+    const { token } = JSON.parse(localStorage.getItem("userInfo")) || {};
 
     // 如果本地有数据，获取本地的数据来渲染
-    if(categories){
+    if (categories) {
       // 登录了(有token)但是第一条不是关注
-      if(categories[0].name !== "关注" && token){
+      if (categories[0].name !== "关注" && token) {
         // 获取栏目数据
         this.getcategories(token);
         return;
       }
       // 第一条是关注，但没登录
-      if(categories[0].name === "关注" && !token){
+      if (categories[0].name === "关注" && !token) {
         // 获取栏目数据
         this.getcategories();
         return;
       }
       this.categories = categories;
       // 给每个栏目都加上pageIndex = 1
-      this.handleCategories()
-    }else{
+      this.handleCategories();
+    } else {
       // 获取栏目数据
-      this.getcategories(token)
+      this.getcategories(token);
     }
     // 请求文章列表，页面一开始都是请求头条栏目下的文章，头条栏目的id是999
     this.$axios({
-      url:"/post",
+      url: "/post",
       // params就是url问号后面的参数
-      params:{
-        category:this.categoryId
+      params: {
+        pageIndex: 1,
+        pageSize: 5,
+        category: this.categoryId
       }
     }).then(res => {
       // 文章的数据
-      const {data} = res.data;
+      const { data } = res.data;
       // 保存到data的list中
-      this.list = data
-    })
+      this.list = data;
+    });
   },
   methods: {
     // 循环给栏目加上pageIndex，每个栏目都是自己的pageIndex
-    handleCategories(){
+    handleCategories() {
       this.categories = this.categories.map(v => {
         v.pageIndex = 1;
         return v;
-      })
+      });
     },
     // 获取栏目数据, 如果有token加上到头信息。没有就不加
-    getcategories(token){
+    getcategories(token) {
       // 请求的配置
       const config = {
-        url:"/category"
-      }
+        url: "/category"
+      };
       // 如果有token，把token添加到头信息中
       // 如果有token请求回来的数据就会有关注的栏目，因为代表是登录的
       // 如果没有token就没有关注的栏目
-      if(token){
+      if (token) {
         config.headers = { Authorization: token };
       }
 
       // 没有本地的数据才去请求栏目接口
       this.$axios(config).then(res => {
         // 菜单的数据
-        const {data} = res.data;
+        const { data } = res.data;
         // 给data添加一个点击跳转到栏目管理的图标
         this.categories = data;
         // 把菜单的数据保存到本地
-        localStorage.setItem("categories",JSON.stringify(data))
+        localStorage.setItem("categories", JSON.stringify(data));
         // 给每个栏目都加上pageIndex = 1
         this.handleCategories();
-      })
+      });
     },
     onLoad() {
-      // 异步更新数据
-      console.log("已经到底了");
-      
+      setTimeout(() => {
+        // 当前栏目下pageIndex加1
+        this.categories[this.active].pageIndex += 1;
+        // 加载下一页的数据
+        this.$axios({
+          url: "/post",
+          params: {
+            pageIndex: this.categories[this.active].pageIndex,
+            pageSize: 5,
+            category: this.categoryId
+          }
+        }).then(res => {
+          const { data, total } = res.data;
+          // 把新的文章数据合并到原来的文章列表中
+          this.list = [...this.list, ...data];
+          // 加载状态结束
+          this.loading = false;
+          // 是否是最后一页
+          if (this.list.length === total) {
+            this.finished = true;
+          }
+        });
+      }, 3000);
     },
-     onRefresh() {
-       setTimeout(() => {
-      // 清空列表数据
-      this.finished = false;
-
-      // 重新加载数据
-      // 将 loading 设置为 true，表示处于加载状态
-      this.loading = false;
-      this.refreshing = false
-      this.onLoad();
-      }, 5000);
+    onRefresh() {
+      this.refreshing = false;
     }
   }
 };

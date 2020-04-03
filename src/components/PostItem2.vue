@@ -17,7 +17,7 @@ export default {
 
 <style scoped lang="less">
 .imgList {
-  padding: 20/360 * 100vw;
+  padding: 10/360 * 100vw 20/360 * 100vw;
   border-bottom: 1px #eee solid;
   h4 {
     // 文字超出两行出现省略号

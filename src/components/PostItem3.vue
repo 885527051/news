@@ -1,5 +1,5 @@
 <template>
-  <div class="cideo">
+  <div class="video">
     <h4>{{data.title}}</h4>
     <div class="cover">
       <!-- 封面图片 -->
@@ -21,7 +21,7 @@ export default {
 
 <style scoped lang="less">
 .video{
-  padding: 20/360*100vw;
+  padding: 10/360 * 100vw 20/360 * 100vw;
   border-bottom: 1px #eee solid;
   h4{
         // 文字超出两行出现省略号
