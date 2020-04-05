@@ -27,6 +27,22 @@
             </div>
         </div>
 
+        <!-- 搜索结果的浮层 -->
+        <div class="result-layer">
+          <div class="result-item">
+            <p>搜索结果的浮层搜索结果的浮层搜索结果的浮层搜索结果的浮层搜索结果的浮层搜索结果的浮层</p>
+            <span class="iconfont iconjiantou1"></span>
+          </div>
+          <div class="result-item">
+            <p>搜索结果的浮层搜索结果的浮层</p>
+            <span class="iconfont iconjiantou1"></span>
+          </div>
+          <div class="result-item">
+            <p>搜索结果的浮层搜索结果的浮层</p>
+            <span class="iconfont iconjiantou1"></span>
+          </div>
+        </div>
+
     </div>
 </template>
 
@@ -74,12 +90,49 @@ export default {
   .record-list{
     padding: 0 10/360*100vw;
     display: flex;
+    // 让弹性盒元素在必要的时候拆行
     flex-wrap: wrap;
     .record-item{
       padding: 5px 10/360*100vw;
       border: 1px #ccc solid;
       font-size: 14px;
       margin: 5/360*100vw 10/360*100vw;
+    }
+  }
+}
+
+.result-layer{
+  position: absolute;
+  // 在定位中如果同时设置top和bottom，那么这个元素高度取这两个定位的距离!
+  top: 58/360*100vw;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  // 裁剪 div 元素中内容的左/右边缘 - 如果溢出元素的内容区域的话：
+  // 如果溢出框，则应该提供滚动机制。
+  overflow-y: auto;
+  padding: 20/360*100vw;
+  box-sizing: border-box;
+
+  .result-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10/360*100vw 0;
+    border-bottom: 1px #eee solid;
+
+    p{
+      flex: 1;
+      margin-right: 10px;
+      overflow: hidden;
+      // 显示省略符号来代表被修剪的文本。
+      text-overflow:ellipsis;
+      // 文本不会换行
+      white-space: nowrap;
+    }
+    span{
+      color: #999;
     }
   }
 }
