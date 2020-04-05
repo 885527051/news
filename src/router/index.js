@@ -84,9 +84,14 @@ const routes = [
   }
  },
  {
-  //  我的收藏页
+  //  我的栏目管理页
   path: "/category",
   component: () => import("@/views/Category"),
+ },
+ {
+  //  我的搜索页
+  path: "/search",
+  component: () => import("@/views/Search"),
  },
 ]
 
