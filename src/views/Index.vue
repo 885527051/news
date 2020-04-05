@@ -102,6 +102,8 @@ export default {
         this.token = token
         // 本地的栏目数据
         const categories = JSON.parse(localStorage.getItem("categories"))
+        console.log(categories);
+        
         if(categories){
             // 如果当前是登录的状态，但是栏目的第一项居然不是“关注”，需要重新请求
             // 如果当前未登录，但是栏目的第一项居然叫“关注”，也需要重新请求
@@ -159,6 +161,7 @@ export default {
                     name:"V"
                 })
                 this.categories = data
+                
                 // 保存到本地
                 localStorage.setItem('categories', JSON.stringify(data))
                 // 调用方法给每个栏目添加新属性
