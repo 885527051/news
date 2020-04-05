@@ -83,6 +83,11 @@ const routes = [
     authorization: true
   }
  },
+ {
+  //  我的收藏页
+  path: "/category",
+  component: () => import("@/views/Category"),
+ },
 ]
 
 const router = new VueRouter({
