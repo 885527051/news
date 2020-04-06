@@ -93,6 +93,11 @@ const routes = [
   path: "/search",
   component: () => import("@/views/Search"),
  },
+ {
+  //  新闻详情页
+  path: "/post/:id",
+  component: () => import("@/views/Post"),
+ },
 ]
 
 const router = new VueRouter({
