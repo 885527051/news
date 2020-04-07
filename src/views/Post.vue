@@ -8,7 +8,12 @@
           <span class="iconfont iconnew"></span>
         </div>
         <!-- 如果关注是false，就加上active这个class，显示一个红色按钮 -->
-        <span class="follow" :class="post.has_follow ? '' : 'active'">{{post.has_follow ? '已关注' : '关注'}}</span>
+        <span class="follow"
+         :class="post.has_follow ? '' : 'active'"
+         @click="handleFollow"
+         >
+         {{post.has_follow ? '已关注' : '关注'}}
+         </span>
       </div>
       <!-- 文章标题 -->
       <h2 class="title">{{post.title}}</h2>
@@ -80,6 +85,22 @@ export default {
       const {data} = res.data;
       this.post = data;
     })
+  },
+  methods:{
+    // 关注和取消关注
+    handleFollow(){
+      // 本地的token
+      const {token} = JSON.parse(localStorage.getItem("userInfo")) || {};
+
+      this.$axios({
+        url:"/user_follows/"+this.post.user.id,
+        headers:{
+          Authorization: token
+        }
+      }).then(res => {
+        console.log(res);
+      })
+    }
   }
 };
 </script>
