@@ -1,6 +1,9 @@
 <template>
   <div>
-    <video src="https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/5b4e96b891e985e5c60d6e91eab9eaea.mp4" 
+    <!-- poster 规定视频下载时显示的图像，或者在用户点击播放按钮前显示的图像。 -->
+    <video 
+    :poster="$axios.defaults.baseURL + post.cover[0].url"
+    :src="$axios.defaults.baseURL + post.content" 
     controls="controls"
     class="video">
     您的浏览器不支持 video 标签。
@@ -27,8 +30,36 @@ export default {
   data(){
     return {
       // 文章的详情
-      post:{}
+      post:{
+        user:{},
+        cover:[{}]
+      },
+      token:""
     }
+  },
+  mounted(){
+    // 获取文章的id
+    const {id} = this.$route.params;
+    // 本地的token
+    const {token} = JSON.parse(localStorage.getItem("userInfo")) || {}
+    // 保存一份到data
+    this.token = token;
+    const config = {
+      url:"/post/" + id
+    }
+    // 如果token有值给头信息加上token
+    if(this.token){
+      config.headers = {
+        Authorization:tokne
+      }
+    }
+
+    // 请求文章的详情
+    this.$axios(config).then(res => {
+      // data是文章的详情
+      const {data} = res.data;
+      this.post = data
+    })
   }
 }
 </script>
