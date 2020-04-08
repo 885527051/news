@@ -46,7 +46,7 @@
         <i>{{post.comment_lenght > 100 ? `99+` : post.comment_lenght}}</i>
       </div>
       <!-- 如果当前是收藏的状态显示一个红色的按钮 -->
-      <div class="icons">
+      <div class="icons" @click="handleStar">
         <!-- 如果当前是收藏的，就添加active这个class，显示一个红色的按钮 -->
         <span class="iconfont iconshoucang" :class="post.has_star ? `active` : ''"></span>
       </div>
@@ -115,11 +115,11 @@ export default {
         }
       }).then(res => {
         // console.log(res);
-        const { data } = res;
+        // const { data } = res;
         // console.log(data);
         // 关注成功之后修改关注状态
         this.post.has_follow = !this.post.has_follow;
-        this.$toast.success(data.message);
+        this.$toast.success(res.data.message);
       });
     },
     // 文章点赞
@@ -140,6 +140,20 @@ export default {
           // 取消点赞就减1
           this.post.like_length -= 1
         }
+        // 弹窗提示
+        this.$toast.success(res.data.message)
+      })
+    },
+    // 收藏
+    handleStar(){
+      this.$axios({
+        url:"/post_star/" + this.post.id,
+        headers:{
+          Authorization: this.token
+        }
+      }).then(res => {
+        // 收藏状态取反
+        this.post.has_star = !this.post.has_star
         // 弹窗提示
         this.$toast.success(res.data.message)
       })
