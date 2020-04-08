@@ -2,6 +2,7 @@
   <div>
     <!-- poster 规定视频下载时显示的图像，或者在用户点击播放按钮前显示的图像。 -->
     <video
+      v-if="post.content"
       :poster="$axios.defaults.baseURL + post.cover[0].url"
       :src="$axios.defaults.baseURL + post.content"
       controls="controls"

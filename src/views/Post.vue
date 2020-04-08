@@ -80,6 +80,14 @@ export default {
     this.$axios(config).then(res => {
       // data是文章的详情
       const { data } = res.data;
+
+      // 替换文字内容里面的本地路径，把localhost:3000替换成基准路径，
+      // “这个功能只对使用线上接口的同学有效果”，如果使用的是本地的后台，不替换也可以
+      data.content = data.content.replace(
+        /httpp:\/\/localhost:3000/ig,
+        this.$axios.defaults.baseURL
+      )
+
       this.post = data;
     });
   },
@@ -132,20 +140,6 @@ export default {
         this.$toast.success(res.data.message)
       })
     },
-    // 收藏
-    handleStar(){
-      this.$axios({
-        url:"/post_star/" + this.post.id,
-        headers:{
-          Authorization: this.token
-        }
-      }).then(res => {
-        // 收藏状态取反
-        this.post.has_star = !this.post.has_star
-        // 弹窗提示
-        this.$toast.success(res.data.message)
-      })
-    }
   }
 };
 </script>
