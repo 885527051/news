@@ -96,6 +96,9 @@ export default {
         PostItem2,
         PostItem3
     },
+    // activated只对keep-alive的组件有用，当组件每次被渲染时候才会执行
+    // 和mounted不一样，mounded只会执行一次
+    // activated(){},
     mounted(){
         // 获取本地的token,如果没有值就等于一个空对象
         const {token} = JSON.parse(localStorage.getItem("userInfo")) || {}
@@ -122,6 +125,18 @@ export default {
         }else{
             // 调用请求栏目的数据,并且保存到本地
             this.getCategories()
+        }
+    },
+    // 组件内的守卫，每次进入页面时候都会触发
+    beforeRouteEnter(to, from, next){
+        // 如果是来自栏目管理页
+        if(from.path === "/category"){
+            // vm就是this
+            next(vm => {
+                vm.active = 0
+            })
+        }else{
+            next()
         }
     },
     methods: {
