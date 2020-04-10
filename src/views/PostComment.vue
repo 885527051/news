@@ -27,7 +27,10 @@
         </div>
 
         <!-- 回复的列表，调用递归的组件, 第二级item.parent有多少层数据，CommentFloor就自调用多少次 -->
-        <CommentFloor v-if="item.parent" :data="item.parent" />
+        <CommentFloor 
+        v-if="item.parent" 
+        :data="item.parent" 
+        @reply="handleReply"/>
 
         <div class="content">{{item.content}}</div>
       </div>
