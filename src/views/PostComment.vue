@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <!-- 头部导航组件 -->
     <NavigateBar title="精彩跟帖" />
 
@@ -32,6 +32,19 @@
         <div class="content">{{item.content}}</div>
       </div>
     </van-list>
+
+    <!-- 发布评论的底部 -->
+    <div class="publish">
+      <!-- 输入框，点击和没点击时候显示的效果是不一样的 -->
+      <van-field
+        v-model="message"
+        :rows="rows"
+        autosize
+        type="textarea"
+        placeholder="说点什么..."
+        class="textarea"
+      />
+    </div>
   </div>
 </template>
 
@@ -61,7 +74,11 @@ export default {
       // 请求的页数
       pageIndex:1,
       // 请求的条数
-      pageSize:5
+      pageSize:5,
+      // 发布评论的数据
+      message:"",
+      // 发布评论输入框的行数
+      rows:1
     };
   },
   components: {
@@ -110,6 +127,9 @@ export default {
 </script>
 
 <style scoped lang="less">
+.container{
+  padding-bottom: 60/360*100vw;
+}
 .comment {
   padding:30/360 * 100vw 15/360 * 100vw;
   border-bottom: 1px #eee solid;
@@ -136,6 +156,20 @@ export default {
   }
   .reply {
     font-size: 12px;
+  }
+}
+.publish{
+  position: fixed;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  padding: 5/360*100vw 15/360*100vw;
+  box-sizing: border-box;
+  background: #fff;
+  .textarea{
+    background: #eee;
+    border-radius: 50px;
+    padding: 5px 20px;
   }
 }
 </style>
